@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Why Do We Do It This Way?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="stage" aria-label="Office playfield"></canvas>
+  <div id="safe-probe" aria-hidden="true"></div>
+
+  <div id="hud" class="hud" hidden>
+    <div class="card tweet">
+      <div class="tweet-head">
+        <span class="avatar" aria-hidden="true"></span>
+        <div class="who"><strong>new hire</strong><span>@why_tho</span></div>
+      </div>
+      <div class="tweet-meta"><span id="clock">9:00 AM</span> · <span id="wave">Wave 1</span> · <strong id="views">0</strong> Views</div>
+      <div class="tweet-stats">
+        <span title="Complaints filed about you">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H10l-6 4z"/></svg><b id="complaints">0</b>
+        </span>
+        <span id="combo-wrap" title="Combo">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 9l3-3 3 3M7 6v10h6M20 15l-3 3-3-3M17 18V8h-6"/></svg><b id="combo">0</b>
+        </span>
+        <span title="Pointless procedures fixed">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b id="fixed">0</b>
+        </span>
+      </div>
+    </div>
+    <div class="card meters">
+      <div class="meter"><label>SOUL</label><div id="soul" class="pips"></div></div>
+      <div class="meter"><label>GOODWILL</label><div id="goodwill" class="pips"></div></div>
+    </div>
+  </div>
+
+  <div id="banner" class="banner"><strong></strong><span></span></div>
+
+  <section id="attract" class="screen attract">
+    <div class="panel title-card">
+      <div class="stamp" aria-hidden="true">UNDER REVIEW</div>
+      <p class="kicker">Memo #001 · Re: the way we do things</p>
+      <h1>Why do we do it <em>this way?</em></h1>
+      <p class="blurb">Fire <b>&ldquo;WHY?&rdquo;</b> at pointless procedures before they hit the floor and become policy. Leave the sensible ones alone &mdash; your coworkers are already watching.</p>
+      <button id="start" class="btn primary pulse" type="button">Press start</button>
+      <p class="controls">&larr; &rarr; / A D / mouse / drag to move &middot; Space / click / hold to question &middot; P pause &middot; M mute</p>
+      <p class="best">Best shift: <b id="best">0</b> views</p>
+    </div>
+    <a class="back" href="../../index.html">&larr; Arcade</a>
+  </section>
+
+  <section id="intro" class="screen dim" hidden>
+    <div class="panel">
+      <p class="kicker">Monday &middot; 9:00 AM &middot; Day one</p>
+      <h2>Welcome to Procedure &amp; Sons.</h2>
+      <ul class="rules">
+        <li><span class="pill red">WHY?</span><span>Question pointless procedures before they hit the floor.</span></li>
+        <li><span class="pill blue">OK</span><span>Let sensible rules land. They&rsquo;re there for a reason.</span></li>
+        <li><span class="pill">!!</span><span><b>Soul</b> drains when nonsense becomes policy. <b>Goodwill</b> drains when you question the good stuff.</span></li>
+      </ul>
+      <div class="bar"><i id="intro-bar"></i></div>
+      <p class="controls">Clocking in&hellip; press fire to skip.</p>
+    </div>
+  </section>
+
+  <section id="pause" class="screen dim" hidden>
+    <div class="panel narrow">
+      <p class="kicker">Break room</p>
+      <h2>On break.</h2>
+      <p class="reason">Nobody questions a coffee break.</p>
+      <div class="actions">
+        <button id="resume" class="btn primary" type="button">Back to work</button>
+        <a class="back inline" href="../../index.html">Quit to arcade</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="over" class="screen dim" hidden>
+    <div class="panel">
+      <p class="kicker" id="over-kicker">End of shift</p>
+      <h2 id="over-title">HR would like a word.</h2>
+      <p class="reason" id="over-reason"></p>
+      <article class="tweet-card">
+        <header>
+          <span class="avatar" aria-hidden="true"></span>
+          <div class="who"><strong>new hire</strong><span>@why_tho</span></div>
+        </header>
+        <p class="body">I bring a sort of &ldquo;why do we do it this way&rdquo; vibe to the work place that most don&rsquo;t like</p>
+        <p class="meta"><span id="over-time">9:00 AM</span> · <b id="over-views">0</b> Views</p>
+        <footer>
+          <span title="Complaints"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H10l-6 4z"/></svg><b id="over-complaints">0</b></span>
+          <span title="Best combo"><svg class="ico" viewBox="0 0 24 24"><path d="M4 9l3-3 3 3M7 6v10h6M20 15l-3 3-3-3M17 18V8h-6"/></svg><b id="over-combo">0</b></span>
+          <span title="Procedures fixed"><svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b id="over-fixed">0</b></span>
+          <span title="Nonsense adopted"><svg class="ico" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></svg><b id="over-adopted">0</b></span>
+        </footer>
+      </article>
+      <p class="best" id="over-best"></p>
+      <div class="actions">
+        <button id="restart" class="btn primary" type="button">Clock in again</button>
+        <button id="to-title" class="btn ghost" type="button">Title screen</button>
+        <a class="back inline" href="../../index.html">Arcade</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
