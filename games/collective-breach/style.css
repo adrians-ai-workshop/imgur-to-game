@@ -1,0 +1,58 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #01040a;
+  color: #9dffc0;
+  font-family: "Bahnschrift", "Segoe UI", Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#gl, #hud {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: block;
+}
+
+#hud { cursor: crosshair; }
+body[data-ui="menu"] #hud { cursor: default; }
+
+#safe {
+  position: fixed;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#exit {
+  position: fixed;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: max(16px, env(safe-area-inset-left));
+  z-index: 2;
+  padding: 7px 12px;
+  border: 1px solid rgba(90, 255, 150, 0.45);
+  background: rgba(2, 12, 8, 0.7);
+  color: #9dffc0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+#exit:hover, #exit:focus-visible {
+  background: rgba(60, 255, 130, 0.25);
+  outline: none;
+}
+
+body[data-ui="menu"] #exit {
+  opacity: 1;
+  pointer-events: auto;
+}
