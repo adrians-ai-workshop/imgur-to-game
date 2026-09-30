@@ -1,0 +1,65 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#screen {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+  cursor: none;
+}
+
+body[data-ui="menu"] #screen {
+  cursor: default;
+}
+
+#safe {
+  position: fixed;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#crt {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0, rgba(0, 0, 0, 0.16) 1px, transparent 1px, transparent 3px);
+}
+
+#exit {
+  position: fixed;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  left: max(12px, env(safe-area-inset-left));
+  z-index: 2;
+  padding: 6px 10px;
+  border: 2px solid #fff;
+  background: #000;
+  color: #fff;
+  font: 700 12px/1 "Courier New", monospace;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#exit:hover, #exit:focus-visible {
+  background: #fcfc00;
+  color: #000;
+  outline: none;
+}
+
+body[data-ui="menu"] #exit {
+  opacity: 1;
+  pointer-events: auto;
+}

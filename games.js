@@ -8,4 +8,7 @@ window.ARCADE_GAMES = [
   { title: "Collective Breach", genre: "3D FPS ASSIMILATION", entry: "games/collective-breach/index.html",
     model: "Claude Sonnet 5.5 (GitHub Copilot)",
     prompt: "I want a new version, different folder, this time same theme, but 3-d fps style.  And omit the tidying up of wires, the action is assimilation and collection.  I'm expecting to use $20 in credits on this, do your best" },
+  { title: "Futile", genre: "8-BIT ACTION", entry: "games/futile/index.html",
+    model: "Claude Sonnet 5.5 (GitHub Copilot)",
+    prompt: "okay, one more.  This time as am 8bit nintendo nes game.  Same plot as the last one, I want bigger maps and a boss at every 4th map.  all other rules apply" },
 ];

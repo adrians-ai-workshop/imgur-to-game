@@ -24,6 +24,8 @@ To run a single game directly, open its page, e.g. `games/resistance-is-tidy/ind
 | --- | --- |
 | Why Do We Do It This Way? | `games/why-do-we-do-it-this-way/` |
 | Resistance Is Tidy | `games/resistance-is-tidy/` |
+| Collective Breach (3D FPS) | `games/collective-breach/` |
+| Futile (8-bit NES style, 12 stages, boss every 4th) | `games/futile/` |
 
 Resistance Is Tidy controls: WASD to move, mouse to aim, Space or click to assimilate, Q or right-click to scan, Esc to pause, M to mute, F for fullscreen. Each game shows its own controls on its start screen.
 
