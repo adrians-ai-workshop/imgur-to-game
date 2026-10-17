@@ -1,0 +1,48 @@
+name: Publish arcade to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out arcade
+        uses: actions/checkout@v4
+
+      - name: Validate puzzles and game registry
+        run: node --test games/einstein/engine.test.cjs
+
+      - name: Prepare static site
+        run: |
+          mkdir _site
+          cp index.html app.js styles.css games.js README.md _site/
+          cp -R games _site/games
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy arcade
+        id: deployment
+        uses: actions/deploy-pages@v4

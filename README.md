@@ -4,6 +4,8 @@ A small browser arcade where each game is built from an Imgur image and a prompt
 
 ## Run the games
 
+**Online:** [Play the arcade on GitHub Pages](https://adrians-ai-workshop.github.io/imgur-to-game/).
+
 **Quickest:** open `index.html` in a modern browser (Chrome, Edge, Firefox or Safari). Click **Browse games** and pick a title. The games also work when opened straight from disk.
 
 **With a local server (optional):** from this folder, run one of:
@@ -32,6 +34,10 @@ To run a single game directly, open its page, e.g. `games/resistance-is-tidy/ind
 | Golden Hour Fenestron (urban rotorcraft charter & hoist rescue, 6 shifts) | `games/golden-hour-fenestron/` |
 | Fenestron 3D: Golden Horizon (3D rotorcraft sim-arcade, 6 sectors) | `games/fenestron-3d/` |
 | A Proper Country (stealth avoidance, McDonald's 1983) | `games/mcdonalds-1983/` |
+| Asteroids (vector arcade shooter) | `games/asteroids/` |
+| Star Wars (first-person vector arcade) | `games/star-wars/` |
+| Tetris Clone (falling-block puzzle) | `games/tetris-clone/` |
+| Einstein Puzzle (GPL Linux game adapted for the web) | `games/einstein/` |
 
 Resistance Is Tidy controls: WASD to move, mouse to aim, Space or click to assimilate, Q or right-click to scan, Esc to pause, M to mute, F for fullscreen. Each game shows its own controls on its start screen.
 
@@ -49,6 +55,34 @@ points. Survive 12 duels, then the Grim Arguer; getting hit costs one of five st
 strip at a time between duels. Esc/P pause, M mute, T restart from the pause panel.
 
 The menu lists each game's original prompt and the model that made it in an "Origin" dropdown.
+
+Einstein Puzzle uses the original game's artwork, sounds, 6x6 deduction rules and
+fail-on-mistake behavior. Left-click a candidate to open it, right-click to exclude;
+right-click clues to hide them and use Switch to view/restore removed clues. On
+touchscreens, toggle Select / Exclude below the board. P pauses, S switches clues,
+X changes input mode, and Ctrl+Z undoes a valid move. Save/load uses five explicit
+browser-local slots (no autosave); the attract menu includes rules and local top
+scores. It works from disk or a static server. See
+[port notes and licensing](games/einstein/README.md) for GPL attribution, original
+source, intentional web differences and tests.
+
+## Publishing
+
+The public hosting repository is
+[adrians-ai-workshop/imgur-to-game](https://github.com/adrians-ai-workshop/imgur-to-game).
+The [Pages workflow](.github/workflows/pages.yml) tests the puzzle engine and
+registry, packages the static arcade and all games, then deploys to GitHub Pages
+automatically on every push to `main`. It can also be run manually from the
+repository's Actions tab. No package installation or build tool is required.
+
+In repository **Settings > Pages**, the source must be **GitHub Actions**.
+The deploy job uses the `github-pages` environment and only grants Pages write
+and identity-token permissions to that job. The published artifact contains the
+arcade files and game sources, including Einstein's GPL license and source
+archive, but not Git history or repository configuration.
+
+Local browser saves do not transfer to the online site. Save slots on GitHub
+Pages belong to that site's browser storage.
 
 ## Adding a game
 

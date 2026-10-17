@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Game-specific styles -->
+    <script src="./game.js" defer></script>
+
+    <script src="../games.js" defer></script>
+  </head>
+  <body>
+    <canvas class="playfield"></canvas>
+
+    <div id="full-screen-status">Click a game in the arcade index to launch it.</div>
+
+    <!-- Attract screen - visible by default -->
+    <section class="attract-view">
+      <div class="screen-wash" aria-hidden="true">
+        <div class="attract-copy">
+          <p class="eyebrow"><span>01</span> / THE ARCADE IS OPEN</p>
+          <h1 id="attract-title">WHAT ARE<br>WE PLAYING<span class="title-period">?</span></h1>
+          <button class="primary-button" type="button" id="browse-button">
+            Browse games
+          </button>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

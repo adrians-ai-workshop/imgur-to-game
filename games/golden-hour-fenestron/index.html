@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Golden Hour Fenestron — Urban Rotorcraft Charter &amp; Rescue</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-state="attract">
+  <canvas id="skyline-canvas" aria-label="Golden Hour Fenestron Flight Viewport"></canvas>
+
+  <header class="hud-top" id="hud-top">
+    <div class="hud-cluster hud-callsign">
+      <div class="callsign-badge">
+        <span class="dot-live"></span>
+        <span id="hud-tail-id">N-245GH // FENESTRON</span>
+      </div>
+      <div class="hud-shift" id="hud-shift">SHIFT 01 / 06 — GOLDEN APRICOT</div>
+    </div>
+
+    <div class="hud-cluster hud-dispatch" id="hud-dispatch">
+      <div class="dispatch-label">ATC DISPATCH // 124.85 MHz</div>
+      <div class="dispatch-text" id="dispatch-text">AI AUTOPILOT DEMO — STANDBY FOR PILOT COMMAND</div>
+    </div>
+
+    <div class="hud-cluster hud-right">
+      <div class="score-block">
+        <div class="metric-item">
+          <span class="metric-label">CREDITS</span>
+          <span class="metric-val" id="hud-score">000,000</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">STREAK</span>
+          <span class="metric-val accent" id="hud-streak">x1.0</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">SORTIES</span>
+          <span class="metric-val" id="hud-deliveries">0 / 3</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button type="button" class="hud-btn" id="btn-camera" title="Flip Nose Direction (F)">YAW [F]</button>
+        <button type="button" class="hud-btn" id="btn-mute" title="Toggle Audio (M)">AUDIO: ON [M]</button>
+        <button type="button" class="hud-btn" id="btn-pause" title="Pause Flight (Esc / P)">PAUSE [ESC]</button>
+        <a href="../../index.html" class="hud-btn hud-btn-exit" title="Return to Arcade Index">ARCADE</a>
+      </div>
+    </div>
+  </header>
+
+  <aside class="hud-radar-wrap" id="hud-radar-wrap">
+    <div class="radar-header">
+      <span>DOPPLER SKYLINE</span>
+      <span id="hud-wind-label">WIND 04 KT E</span>
+    </div>
+    <canvas id="radar-canvas" width="240" height="76"></canvas>
+  </aside>
+
+  <footer class="hud-bottom" id="hud-bottom">
+    <div class="avionics-card">
+      <span class="av-label">COLLECTIVE / ALT</span>
+      <div class="av-row">
+        <span class="av-big" id="hud-alt">420</span>
+        <span class="av-unit">FT AGL</span>
+      </div>
+      <div class="av-bar-track"><div class="av-bar-fill" id="bar-collective"></div></div>
+    </div>
+
+    <div class="avionics-card">
+      <span class="av-label">VERT SPEED (VSI)</span>
+      <div class="av-row">
+        <span class="av-big" id="hud-vsi">+0.0</span>
+        <span class="av-unit">FT/S</span>
+      </div>
+      <div class="av-vsi-hint" id="hud-vsi-status">TOUCHDOWN SAFE &lt; 11 FT/S</div>
+    </div>
+
+    <div class="avionics-card">
+      <span class="av-label">AIRSPEED / BANK</span>
+      <div class="av-row">
+        <span class="av-big" id="hud-speed">00</span>
+        <span class="av-unit">KTS</span>
+      </div>
+      <div class="av-vsi-hint" id="hud-attitude">PITCH 0° // TRIM AUTO</div>
+    </div>
+
+    <div class="avionics-card">
+      <span class="av-label">JET-A1 FUEL</span>
+      <div class="av-row">
+        <span class="av-big" id="hud-fuel">100%</span>
+        <span class="av-unit" id="hud-hull">AIRFRAME 100%</span>
+      </div>
+      <div class="av-bar-track"><div class="av-bar-fill fuel-fill" id="bar-fuel"></div></div>
+    </div>
+
+    <div class="avionics-card">
+      <span class="av-label">CABIN &amp; HOIST WINCH</span>
+      <div class="av-row">
+        <span class="av-big" id="hud-cabin">EMPTY</span>
+        <span class="av-unit" id="hud-hoist-state">HOIST STOWED</span>
+      </div>
+      <div class="av-vsi-hint" id="hud-destination">AWAITING PASSENGER / EVACUEE</div>
+    </div>
+  </footer>
+  <div class="touch-controls" id="touch-controls" aria-hidden="true">
+    <div class="touch-pad">
+      <button type="button" class="touch-btn" data-key="KeyW">▲ CLIMB</button>
+      <div class="touch-mid">
+        <button type="button" class="touch-btn" data-key="KeyA">◀ BANK L</button>
+        <button type="button" class="touch-btn" data-key="KeyD">BANK R ▶</button>
+      </div>
+      <button type="button" class="touch-btn" data-key="KeyS">▼ DESCEND</button>
+    </div>
+    <div class="touch-actions">
+      <button type="button" class="touch-btn action-hoist" data-key="Space">HOIST / CABLE [SPACE]</button>
+      <button type="button" class="touch-btn action-trim" data-key="ShiftLeft">FLIR &amp; STABILIZE [SHIFT]</button>
+    </div>
+  </div>
+
+  <section class="attract-overlay" id="attract-screen" aria-labelledby="game-title">
+    <div class="attract-card">
+      <div class="attract-eyebrow">
+        <span class="badge-gold">TWIN-TURBINE URBAN ROTORCRAFT SIM-ARCADE</span>
+        <span class="badge-freq">CHANNEL 124.85 // LIVE SKYLINE DEMO</span>
+      </div>
+
+      <h1 id="game-title" class="attract-title">
+        GOLDEN HOUR <span>FENESTRON</span>
+      </h1>
+
+      <p class="attract-lead">
+        Pilot the blue-and-white shrouded-tail <strong>EC-245 Fenestron</strong> across a blazing sunset metropolis.
+        Ride urban canyon updrafts, touch down gently on high-rise helipads for executive charters, and lower your rescue hoist over obstructed spires before twilight falls.
+      </p>
+
+      <div class="attract-grid">
+        <div class="control-box">
+          <h2>FLIGHT CONTROLS</h2>
+          <ul>
+            <li><kbd>W</kbd> <kbd>S</kbd> or <kbd>↑</kbd> <kbd>↓</kbd> <span>Collective Pitch (Climb / Descend)</span></li>
+            <li><kbd>A</kbd> <kbd>D</kbd> or <kbd>←</kbd> <kbd>→</kbd> <span>Cyclic Tilt (Bank &amp; Accelerate)</span></li>
+            <li><kbd>SPACE</kbd> <span>Deploy / Reel Rescue Winch Cable</span></li>
+            <li><kbd>SHIFT</kbd> or <kbd>E</kbd> <span>Airbrake Hover Trim + Nose FLIR Scan</span></li>
+            <li><kbd>F</kbd> <span>Yaw 180° (Flip Nose Heading)</span></li>
+          </ul>
+        </div>
+
+        <div class="control-box">
+          <h2>FLIGHT BRIEFING</h2>
+          <ul>
+            <li><strong>VIP Helipads [H]:</strong> Settle onto golden landing pads under <strong>11 FT/S</strong> vertical speed to board &amp; deliver passengers.</li>
+            <li><strong>Spire Hoist Rescues:</strong> Hover above smoky or spire rooftops and hold <kbd>SPACE</kbd> to winch stranded personnel aboard.</li>
+            <li><strong>Refuel &amp; Repair:</strong> Land on cyan <strong>[H] MED-BASE</strong> pads to top up Jet-A1 fuel and patch rotor/skid wear.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="attract-cta-row">
+        <button type="button" class="btn-start-flight" id="btn-start-flight">
+          <span class="btn-rotor-icon">✦</span>
+          <span>SPOOL TURBINES &amp; LAUNCH SORTIE</span>
+          <span class="btn-key-hint">[ENTER / SPACE / CLICK]</span>
+        </button>
+        <a href="../../index.html" class="btn-back-arcade">← MASTER GAME LIST</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal-card">
+      <p class="modal-eyebrow" id="modal-eyebrow">FLIGHT DECK STATUS</p>
+      <h2 class="modal-title" id="modal-title">FLIGHT PAUSED</h2>
+      <p class="modal-desc" id="modal-desc">Turbines holding at flight idle over downtown sector.</p>
+      <div class="modal-stats" id="modal-stats"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-start-flight" id="btn-modal-primary">RESUME FLIGHT [ENTER]</button>
+        <button type="button" class="btn-secondary" id="btn-modal-restart">RESTART CAMPAIGN [R]</button>
+        <a href="../../index.html" class="btn-back-arcade">EXIT TO ARCADE</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="audio.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

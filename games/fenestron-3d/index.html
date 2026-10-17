@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Fenestron 3D: Golden Horizon — 3D Urban Rotorcraft Sim-Arcade</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-state="attract">
+  <canvas id="viewport-3d" aria-label="Fenestron 3D Flight Viewport"></canvas>
+
+  <!-- Top Integrated 3D Avionics Bar -->
+  <header class="hud-top">
+    <div class="hud-panel hud-brand">
+      <div class="live-row">
+        <span class="pulse-led"></span>
+        <span class="callsign">N-245GH // 3D AVIONICS</span>
+      </div>
+      <div class="shift-label" id="hud-shift">SECTOR 01 / 06 — GOLDEN HORIZON</div>
+    </div>
+
+    <div class="hud-panel hud-compass-box">
+      <div class="compass-Readout" id="hud-heading">HDG 090° E // CAM: CHASE</div>
+      <div class="dispatch-banner" id="hud-dispatch">3D AUTOPILOT ORBIT — PRESS [ENTER] TO TAKE CONTROLS</div>
+    </div>
+
+    <div class="hud-panel hud-controls-top">
+      <div class="metrics-group">
+        <div class="metric">
+          <span class="m-lbl">CREDITS</span>
+          <span class="m-val" id="hud-score">000,000</span>
+        </div>
+        <div class="metric">
+          <span class="m-lbl">MULT</span>
+          <span class="m-val gold" id="hud-streak">x1.0</span>
+        </div>
+        <div class="metric">
+          <span class="m-lbl">SORTIES</span>
+          <span class="m-val" id="hud-quota">0 / 3</span>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="hud-btn" id="btn-cam" title="Cycle 3D Camera (C)">CAM: CHASE [C]</button>
+        <button type="button" class="hud-btn" id="btn-mute" title="Toggle Audio (M)">AUDIO: ON [M]</button>
+        <button type="button" class="hud-btn" id="btn-pause" title="Pause Sortie (Esc / P)">PAUSE [ESC]</button>
+        <a href="../../index.html" class="hud-btn exit-btn">ARCADE</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3D Top-Down Sector Radar -->
+  <aside class="hud-radar">
+    <div class="radar-title">
+      <span>3D SECTOR RADAR</span>
+      <span id="hud-dist">TGT --- M</span>
+    </div>
+    <canvas id="radar-3d" width="176" height="176"></canvas>
+  </aside>
+
+  <!-- Bottom Flight Telemetry Strip -->
+  <footer class="hud-bottom">
+    <div class="tele-card">
+      <span class="t-lbl">COLLECTIVE / ALTITUDE</span>
+      <div class="t-row">
+        <span class="t-num" id="hud-alt">450</span>
+        <span class="t-unit">FT AGL</span>
+      </div>
+      <div class="t-bar"><div class="t-fill" id="bar-coll"></div></div>
+    </div>
+
+    <div class="tele-card">
+      <span class="t-lbl">VERTICAL SPEED (VSI)</span>
+      <div class="t-row">
+        <span class="t-num" id="hud-vsi">+0.0</span>
+        <span class="t-unit">FT/S</span>
+      </div>
+      <div class="t-sub" id="hud-vsi-hint">SAFE TOUCHDOWN &lt; 12 FT/S</div>
+    </div>
+
+    <div class="tele-card">
+      <span class="t-lbl">AIRSPEED &amp; ATTITUDE</span>
+      <div class="t-row">
+        <span class="t-num" id="hud-spd">00</span>
+        <span class="t-unit">KTS</span>
+      </div>
+      <div class="t-sub" id="hud-att">PITCH 0° // ROLL 0°</div>
+    </div>
+
+    <div class="tele-card">
+      <span class="t-lbl">JET-A1 &amp; AIRFRAME</span>
+      <div class="t-row">
+        <span class="t-num" id="hud-fuel">100%</span>
+        <span class="t-unit" id="hud-hull">HULL 100%</span>
+      </div>
+      <div class="t-bar"><div class="t-fill fuel" id="bar-fuel"></div></div>
+    </div>
+
+    <div class="tele-card">
+      <span class="t-lbl">MANIFEST &amp; WINCH</span>
+      <div class="t-row">
+        <span class="t-num" id="hud-manifest">EMPTY</span>
+        <span class="t-unit" id="hud-winch">STOWED</span>
+      </div>
+      <div class="t-sub" id="hud-mission-target">SCANNING 3D SKYLINE...</div>
+    </div>
+  </footer>
+  <!-- Touch Flight Deck for Mobile / Tablet -->
+  <div class="touch-deck" id="touch-deck" aria-hidden="true">
+    <div class="touch-cluster">
+      <button type="button" class="t-btn" data-key="KeyW">▲ FWD</button>
+      <div class="t-row-btn">
+        <button type="button" class="t-btn" data-key="KeyA">⟲ YAW L</button>
+        <button type="button" class="t-btn" data-key="KeyD">YAW R ⟳</button>
+      </div>
+      <button type="button" class="t-btn" data-key="KeyS">▼ AFT</button>
+    </div>
+
+    <div class="touch-cluster">
+      <button type="button" class="t-btn accent" data-key="ArrowUp">▲ COLLECTIVE UP</button>
+      <button type="button" class="t-btn" data-key="ArrowDown">▼ COLLECTIVE DN</button>
+      <button type="button" class="t-btn cyan" data-key="Space">HOIST CABLE [SPACE]</button>
+    </div>
+  </div>
+
+  <!-- 3D Arcade Attract Screen Overlay -->
+  <section class="attract-overlay" id="attract-screen" aria-labelledby="title-3d">
+    <div class="attract-card">
+      <div class="eyebrow-row">
+        <span class="pill-gold">3D PERSPECTIVE ROTORCRAFT SIM-ARCADE</span>
+        <span class="pill-cyan">LIVE 3D SKYLINE ORBIT DEMO</span>
+      </div>
+
+      <h1 id="title-3d" class="title-3d">
+        FENESTRON <span>3D: GOLDEN HORIZON</span>
+      </h1>
+
+      <p class="lead-3d">
+        Take 3D flight command of the twin-turbine <strong>EC-245 Fenestron</strong> above a full-3D golden-hour metropolis.
+        Bank around gleaming sunlit glass skyscrapers in 360° airspace, align with rooftop <strong>[H]</strong> helipads, and winch stranded spire personnel into the cabin.
+      </p>
+
+      <div class="grid-3d">
+        <div class="info-box">
+          <h2>3D FLIGHT DECK CONTROLS</h2>
+          <ul>
+            <li><kbd>W</kbd> <kbd>S</kbd> <span>Cyclic Pitch (Accelerate Forward / Reverse)</span></li>
+            <li><kbd>A</kbd> <kbd>D</kbd> <span>Fenestron Rudder Yaw (Turn Left / Right)</span></li>
+            <li><kbd>Q</kbd> <kbd>E</kbd> or <kbd>←</kbd> <kbd>→</kbd> <span>Cyclic Roll (Strafe Left / Right)</span></li>
+            <li><kbd>↑</kbd> <kbd>↓</kbd> or <kbd>R</kbd> <kbd>F</kbd> <span>Collective Pitch (Climb / Descend)</span></li>
+            <li><kbd>SPACE</kbd> / <kbd>SHIFT</kbd> <span>Deploy Rescue Winch / Auto-Hover Brake</span></li>
+            <li><kbd>C</kbd> <span>Cycle 3D Camera (Chase / Cockpit / Action Orbit)</span></li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h2>3D SORTIE BRIEFING</h2>
+          <ul>
+            <li><strong>3D Helipad Landings:</strong> Follow the 3D HUD diamond &amp; sky-pillar to the target tower and touch down under <strong>12 FT/S</strong>.</li>
+            <li><strong>3D Spire Winch Evac:</strong> Hover over obstructed antenna towers and hold <kbd>SPACE</kbd> to lower the 3D rescue cable.</li>
+            <li><strong>Cyan Med-Base Pads:</strong> Touch down on cyan rooftops anytime to refuel Jet-A1 tanks and repair airframe damage.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <button type="button" class="btn-launch" id="btn-launch">
+          <span class="spin-icon">✦</span>
+          <span>ENGAGE 3D ROTORS &amp; LAUNCH SORTIE</span>
+          <span class="hint-key">[ENTER / CLICK]</span>
+        </button>
+        <a href="../../index.html" class="btn-outline">← MASTER GAME LIST</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pause / Sector Clear / Debrief Modal -->
+  <section class="modal-backdrop" id="modal-backdrop" hidden>
+    <div class="modal-box">
+      <p class="modal-tag" id="modal-tag">3D FLIGHT DECK</p>
+      <h2 class="modal-heading" id="modal-heading">SORTIE PAUSED</h2>
+      <p class="modal-copy" id="modal-copy">Rotors holding station in 3D urban airspace.</p>
+      <div class="modal-metrics" id="modal-metrics"></div>
+      <div class="modal-btns">
+        <button type="button" class="btn-launch" id="btn-modal-go">RESUME SORTIE [ENTER]</button>
+        <button type="button" class="btn-outline" id="btn-modal-reset">RESTART CAMPAIGN</button>
+        <a href="../../index.html" class="btn-outline">ARCADE MENU</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="audio.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

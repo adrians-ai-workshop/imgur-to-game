@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f1f">
+<title>Bony Facade — Turret Defense</title>
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #070a14;
+  }
+
+  body {
+    font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+    color: #eef1ff;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; -webkit-user-select: none;
+  }
+
+  /* Full-viewport game surface. The world always uses a fixed 1200x800
+     design space and is letterboxed to fit without stretching. */
+  #game {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh; height: 100dvh;
+    display: block; touch-action: none;
+  }
+
+  /* Integrated HUD overlays, positioned in safe areas. */
+  .hud {
+    position: fixed; z-index: 5; pointer-events: none;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .85);
+  }
+
+  #hud-status {
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    left: calc(env(safe-area-inset-left, 0px) + 14px);
+    display: none; font-size: 13px; letter-spacing: .04em; line-height: 1.8;
+  }
+  #hud-status.show { display: block; }
+  #hud-status .heart { color: #ff5d6c; }
+  #hud-status .bone  { color: #f6f2e4; }
+  #hud-status .wave  { color: #ffd23f; }
+
+  #btn-pause {
+    position: fixed; z-index: 6; display: none;
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    right: calc(env(safe-area-inset-right, 0px) + 14px);
+  }
+  #btn-pause.show { display: inline-block; }
+
+  .btn {
+    pointer-events: auto;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    letter-spacing: .14em; color: #101325; background: #ffd23f;
+    border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer;
+    box-shadow: 0 3px 0 #b8901a, 0 6px 14px rgba(0, 0, 0, .45);
+  }
+  .btn:hover { filter: brightness(1.07); }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #b8901a; }
+  .btn:focus-visible { outline: 3px solid #66d9ff; outline-offset: 2px; }
+  .btn.secondary {
+    background: rgba(16, 20, 42, .72); color: #eef1ff;
+    box-shadow: none; border: 1px solid rgba(238, 241, 255, .5);
+  }
+
+  #hud-cue {
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 52px);
+    transform: translateX(-50%);
+    display: none; font-size: 14px; font-weight: 700;
+    letter-spacing: .12em; white-space: nowrap;
+  }
+  #hud-cue.show { display: block; }
+
+  /* Bottom on-screen control bar: wave start / speed / mute, kept clear of
+     safe areas and the canvas click space. */
+  #controls {
+    position: fixed; z-index: 6; left: 0; right: 0; bottom: 0;
+    display: none; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px calc(env(safe-area-inset-right, 0px) + 10px)
+             calc(env(safe-area-inset-bottom, 0px) + 8px)
+             calc(env(safe-area-inset-left, 0px) + 10px);
+    background: linear-gradient(transparent, rgba(7, 10, 20, .88) 45%);
+  }
+  #controls.show { display: flex; }
+  #controls .btn { padding: 8px 14px; font-size: 12px; }
+
+  /* Overlay panels: attract / paused / game over / victory. */
+  .overlay {
+    position: fixed; inset: 0; z-index: 10; display: none;
+    align-items: center; justify-content: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 16px)
+             calc(env(safe-area-inset-right, 0px) + 16px)
+             calc(env(safe-area-inset-bottom, 0px) + 16px)
+             calc(env(safe-area-inset-left, 0px) + 16px);
+    background: rgba(5, 7, 16, .45);
+  }
+  .overlay.show { display: flex; }
+
+  .panel {
+    width: min(560px, 100%); max-height: 88dvh; overflow: auto;
+    padding: 28px 30px; text-align: center;
+    background: rgba(11, 15, 33, .88);
+    border: 2px solid #f6f2e4; border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .65);
+  }
+  .panel h1 {
+    margin: 0; font-size: clamp(30px, 6vw, 46px);
+    letter-spacing: .08em; color: #ffd23f;
+    text-shadow: 0 0 22px rgba(255, 210, 63, .45);
+  }
+  .panel .subtitle {
+    margin: 10px 0 18px; font-size: clamp(12px, 2.4vw, 15px);
+    letter-spacing: .18em; color: #f6f2e4;
+  }
+  .panel p { margin: 10px 0; font-size: 14px; line-height: 1.6; color: #c9ceef; }
+  .panel ul {
+    margin: 14px auto; padding-left: 18px; max-width: 430px;
+    text-align: left; font-size: 13px; line-height: 1.85; color: #c9ceef;
+  }
+  .panel ul b { color: #f6f2e4; }
+  .panel .orange { color: #ff9a3d; }
+  .panel .actions {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center; margin-top: 18px;
+  }
+  .panel .big-start { font-size: 16px; padding: 13px 26px; }
+  .panel .blink {
+    margin-top: 16px; font-size: 12px; letter-spacing: .18em;
+    color: #66d9ff; animation: blink 1.1s steps(2, start) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <!-- Integrated HUD -->
+  <div class="hud" id="hud-status" aria-hidden="true">
+    <div><span class="heart">&#10084;</span> <span id="stat-lives">20</span> &nbsp;&nbsp; <span class="bone">&#9776;</span> <span id="stat-bones">0</span></div>
+    <div><span class="wave">WAVE</span> <span id="stat-wave">1</span>/<span id="stat-waves">12</span></div>
+  </div>
+  <button class="btn secondary" id="btn-pause" type="button" aria-label="Pause game">PAUSE</button>
+  <div class="hud" id="hud-cue" role="status"></div>
+
+  <div id="controls">
+    <button class="btn" id="btn-startwave" type="button">START WAVE 1</button>
+    <button class="btn secondary" id="btn-speed" type="button">1x &gt;</button>
+    <button class="btn secondary" id="btn-mute" type="button">SOUND ON</button>
+  </div>
+
+  <!-- Attract screen -->
+  <section class="overlay show" id="overlay-attract" aria-labelledby="attract-title">
+    <div class="panel">
+      <h1 id="attract-title">BONY FACADE</h1>
+      <p class="subtitle">TURRET DEFENSE &middot; ONE HOUSE &middot; EVERY SKELETON IN TOWN</p>
+      <p>Halloween dusk. Somebody glued an army of skeletons to a creaky Victorian house with a round turret &mdash; and now the bones are on the move. They climb up from the lawn, pick a window, and knock the house down brick by brick.</p>
+      <p>You are the <span class="orange"><b>Jack-o&apos;-Launcher</b></span> squad. Buy launchers, drop them on the porch roof and turret spots, and blast every climber off the siding before the house hits 0&#10084;.</p>
+      <ul>
+        <li><b>1 / 2 / 3</b> choose a launcher (Banger 25&middot; Fizzer 50&middot; Mortar 80) &mdash; click a glowing spot to place, click again for Firecracker / Lightning / Cluster upgrades.</li>
+        <li><b>Click a skeleton</b> (or press <b>Space</b>) to fire a Pumpkin Bomb: 3 bangs per wave.</li>
+        <li>Skeletons pop and <b>fall apart</b> into bone bits and a skull &mdash; they fall onto the lawn for <b>bonus bones</b>.</li>
+        <li>Survive <b>12 waves</b> (moonrise, boss at 12). <b>Esc</b> pause &middot; <b>M</b> mute.</li>
+      </ul>
+      <div class="actions">
+        <button class="btn big-start" id="btn-start" type="button">START DEFENDING</button>
+      </div>
+      <p class="blink">OR PRESS ENTER / SPACE</p>
+    </div>
+  </section>
+
+  <!-- Pause -->
+  <section class="overlay" id="overlay-pause" aria-labelledby="pause-title">
+    <div class="panel">
+      <h1 id="pause-title">PAUSED</h1>
+      <p class="subtitle">THE BONES HOLD THEIR BREATH</p>
+      <div class="actions">
+        <button class="btn big-start" id="btn-resume" type="button">RESUME</button>
+        <button class="btn secondary" id="btn-restart-pause" type="button">RESTART</button>
+        <button class="btn secondary" id="btn-quit-pause" type="button">QUIT TO ATTRACT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game over -->
+  <section class="overlay" id="overlay-over" aria-labelledby="over-title">
+    <div class="panel">
+      <h1 id="over-title">HOUSE DOWN!</h1>
+      <p class="subtitle" id="over-subtitle">THE SKELETONS WIN HALLOWEEN</p>
+      <p id="over-stats"></p>
+      <div class="actions">
+        <button class="btn big-start" id="btn-retry" type="button">PLAY AGAIN</button>
+        <button class="btn secondary" id="btn-quit-over" type="button">QUIT TO ATTRACT</button>
+      </div>
+      <p class="blink">OR PRESS ENTER</p>
+    </div>
+  </section>
+
+  <!-- Victory -->
+  <section class="overlay" id="overlay-win" aria-labelledby="win-title">
+    <div class="panel">
+      <h1 id="win-title">DAWN! YOU HELD!</h1>
+      <p class="subtitle" id="win-subtitle">THE HOUSE STANDS &middot; THE LAWN IS A BONEYARD</p>
+      <p id="win-stats"></p>
+      <div class="actions">
+        <button class="btn big-start" id="btn-win-again" type="button">PLAY AGAIN</button>
+        <button class="btn secondary" id="btn-quit-win" type="button">QUIT TO ATTRACT</button>
+      </div>
+      <p class="blink">OR PRESS ENTER</p>
+    </div>
+  </section>
+
+  <div class="visually-hidden" role="status" id="live"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
