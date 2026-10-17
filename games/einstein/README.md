@@ -37,10 +37,16 @@ copy of every native dialog**. The gameplay artwork is original; fonts use the
 browser's Arial/Helvetica rather than the original packaged TrueType fonts.
 
 The required animated attract menu requires an explicit New game / Enter action.
-The game fills the viewport with no separate side panel: desktop retains the
-original relative positions while stretching to the screen; portrait reflows the
-same board and clues into a touch-friendly, vertically scrollable game view.
-Browser safe areas and reduced-motion preferences are respected.
+The background fills the viewport with no separate side panel. Desktop gameplay
+preserves the original **4:3 (800x600) aspect ratio**, centered and uniformly scaled
+to fit the available width and height. Cards stay square, and the complete grid,
+controls and clue strips remain visible on wide and ultrawide screens. Spare
+space uses the same background rather than stretching the puzzle. Text and gaps
+scale with the playfield, not with the browser width.
+
+Portrait reflows the same board and clues into a touch-friendly, vertically
+scrollable game view while preserving square cards. Browser safe areas and
+reduced-motion preferences are respected.
 
 Web conveniences: touch Select/Exclude mode, keyboard input, clue descriptions
 and highlights, undo for **valid** moves only, browser fullscreen, volume control,
