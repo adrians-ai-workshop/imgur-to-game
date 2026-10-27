@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0f1e" />
+    <meta
+      name="description"
+      content="First Hunting Mission: a tiny tabby, five enormous rooms, and a household that is only pretending to be scared."
+    />
+    <title>First Hunting Mission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="stage" id="stage">
+      <canvas
+        id="game"
+        aria-label="A tiny tabby kitten stalks dust bunnies across a moonlit bed."
+        role="img"
+      ></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      <!-- In-view HUD: everything lives over the playfield. -->
+      <div class="hud" id="hud" hidden>
+        <div class="hud-cluster hud-cluster--score">
+          <p class="hud-label">SCARE POINTS</p>
+          <p class="hud-score" id="hud-score">0</p>
+          <p class="hud-combo" id="hud-combo">
+            <b id="hud-mult">&times;1</b>
+            <span id="hud-combo-note">unnoticed</span>
+          </p>
+        </div>
+
+        <div class="hud-cluster hud-cluster--mission">
+          <p class="hud-mission" id="hud-mission">MISSION 01 &middot; THE DUVET SEA</p>
+          <div class="hud-pips" id="hud-pips" aria-hidden="true"></div>
+        </div>
+
+        <div class="hud-cluster hud-cluster--status">
+          <div class="hud-lives" id="hud-lives" aria-hidden="true"></div>
+          <div class="hud-clock">
+            <p class="hud-label hud-label--inline">PATIENCE</p>
+            <p class="hud-time" id="hud-time">78</p>
+            <span class="hud-timer"><i id="hud-timer-fill"></i></span>
+          </div>
+          <div class="hud-actions">
+            <button class="chip" id="btn-sound" type="button" aria-pressed="false">SOUND ON</button>
+            <button class="chip" id="btn-pause" type="button">PAUSE</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attract screen -->
+      <section class="screen screen--attract" id="screen-attract" aria-labelledby="attract-title">
+        <div class="attract-panel">
+          <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span> A SOFT CAT PRODUCTION</p>
+          <h1 id="attract-title">
+            <span class="title-line">FIRST</span>
+            <span class="title-line">HUNTING</span>
+            <span class="title-line title-line--accent">MISSION</span>
+          </h1>
+          <p class="quote">
+            &ldquo;This is her first hunting mission.
+            <em>Pretend you&rsquo;re scared.</em>&rdquo;
+          </p>
+          <div class="attract-actions">
+            <button class="cta" id="btn-start" type="button">
+              Begin the hunt <span aria-hidden="true">&rarr;</span>
+            </button>
+            <span class="attract-meta">5 rooms &middot; 9 lives &middot; one very small cat</span>
+          </div>
+          <p class="portrait-note">Turn the phone sideways — she hunts better on a wide screen.</p>
+
+          <dl class="keys" aria-label="Controls">
+            <div class="keys-row"><dt>A / D</dt><dd>sneak</dd></div>
+            <div class="keys-row"><dt>Shift</dt><dd>trot (loud)</dd></div>
+            <div class="keys-row"><dt>Space</dt><dd>hold to wind up, release to pounce</dd></div>
+            <div class="keys-row"><dt>P / M</dt><dd>pause / mute</dd></div>
+          </dl>
+        </div>
+        <p class="attract-foot" id="attract-foot">Best scare points: 0</p>
+      </section>
+
+      <!-- Briefing, results, and report cards -->
+      <section class="screen screen--card" id="screen-card" hidden>
+        <div class="card" role="dialog" aria-modal="true" aria-labelledby="card-title">
+          <p class="card-eyebrow" id="card-eyebrow">MISSION 01</p>
+          <h2 class="card-title" id="card-title">THE DUVET SEA</h2>
+          <p class="card-sub" id="card-sub"></p>
+          <dl class="card-stats" id="card-stats"></dl>
+          <p class="card-flavor" id="card-flavor"></p>
+          <div class="card-actions">
+            <button class="cta" id="card-primary" type="button">Start mission</button>
+            <button class="ghost" id="card-secondary" type="button" hidden>Attract screen</button>
+          </div>
+          <p class="card-hint" id="card-hint">Space / Enter to continue</p>
+        </div>
+      </section>
+
+      <!-- Pause -->
+      <section class="screen screen--pause" id="screen-pause" hidden>
+        <div class="card card--small" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+          <p class="card-eyebrow">MISSION ON HOLD</p>
+          <h2 class="card-title card-title--sm" id="pause-title">SHE IS MID-WIGGLE.</h2>
+          <p class="card-flavor">No sudden moves. She will notice.</p>
+          <div class="card-actions card-actions--stack">
+            <button class="cta" id="btn-resume" type="button">Resume</button>
+            <button class="ghost" id="btn-restart" type="button">Restart mission</button>
+            <button class="ghost" id="btn-quit" type="button">Attract screen</button>
+          </div>
+          <p class="card-hint">Esc or P to resume</p>
+        </div>
+      </section>
+
+      <!-- Touch controls -->
+      <div class="touch" id="touch" hidden>
+        <div class="touch-move">
+          <button class="touch-btn" id="t-left" type="button" aria-label="Sneak left">&#9664;</button>
+          <button class="touch-btn" id="t-right" type="button" aria-label="Sneak right">&#9654;</button>
+        </div>
+        <button class="touch-btn touch-btn--pounce" id="t-pounce" type="button">POUNCE</button>
+      </div>
+
+      <p class="sr-only" id="live-region" aria-live="polite"></p>
+    </main>
+
+    <script src="audio.js"></script>
+    <script src="art.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

@@ -38,8 +38,19 @@ To run a single game directly, open its page, e.g. `games/resistance-is-tidy/ind
 | Star Wars (first-person vector arcade) | `games/star-wars/` |
 | Tetris Clone (falling-block puzzle) | `games/tetris-clone/` |
 | Einstein Puzzle (GPL Linux game adapted for the web) | `games/einstein/` |
+| First Hunting Mission (stealth-pounce, 5 rooms, 9 lives) | `games/first-hunting-mission/` |
+| Ink & Edge (sketchbook blade duel) | `games/ink-and-edge/` |
+| I Can't Prove It (pumpkin-stand shoplifting stealth, endless shifts) | `games/cant-prove-it/` |
+| Pumpkin Cup (bra-sized pumpkin heist, side-view runner) | `games/pumpkin-cup/` |
+| Rift Runners (alien hoverbike racing, 3 laps, 8 riders) | `games/rift-runners/` |
 
 Resistance Is Tidy controls: WASD to move, mouse to aim, Space or click to assimilate, Q or right-click to scan, Esc to pause, M to mute, F for fullscreen. Each game shows its own controls on its start screen.
+
+First Hunting Mission (a very small tabby, five enormous rooms, and a household that is only pretending to be scared):
+A/D sneak (silent), Shift trot (fast and loud), hold Space to wind up and release to pounce, P/Esc pause, M mute,
+F fullscreen. Land close to your prey for a clean catch, stay unseen for a bigger multiplier, and chain pounces to
+raise the score. Nine lives are shared across the run; the last room asks you to pounce a vacuum cleaner's glowing
+power button four times. It works from disk or a static server.
 
 Bony Facade (turret-defense of the same house the skeletons are climbing): works from file:// — 1/2/3 pick a
 Jack-o'-Launcher, click a glowing spot to place it, click a placed launcher to buy its upgrade (firecracker /
@@ -55,6 +66,8 @@ points. Survive 12 duels, then the Grim Arguer; getting hit costs one of five st
 strip at a time between duels. Esc/P pause, M mute, T restart from the pause panel.
 
 The menu lists each game's original prompt and the model that made it in an "Origin" dropdown.
+
+I Can't Prove It (you are the shoplifter from the meme — grab pumpkins off the tiered display, stuff them into your tote bag, and dump them at your truck before the guard catches you): WASD/arrows move, hold Space to grab a pumpkin, hold F to stuff it in your bag, hold E at the truck pad to dump (full bags pay a bonus), X drops what you're carrying. The guard can only bust you if he sees your hands on a pumpkin — his cone turns red and shows "!" while he builds proof; being seen with pumpkins fills the suspicion meter until he chases you for a bag check, which always ends in "I CAN'T PROVE IT." (but costs you time). The display tower and the truck block line of sight. Hit each shift's quota before the clock runs out; three busts or a missed shift ends the run. P/Esc pause, M mute. Works from disk or a static server.
 
 Einstein Puzzle uses the original game's artwork, sounds, 6x6 deduction rules and
 fail-on-mistake behavior. Left-click a candidate to open it, right-click to exclude;

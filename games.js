@@ -36,7 +36,29 @@ window.ARCADE_GAMES = [
     model: "Claude (via Cline, VS Code)",
     prompt: "There's another vector game, Star Wars. Do you think you can make that? [no attached image]" },
   { title: "Tetris Clone", genre: "FALLING-BLOCK PUZZLE", entry: "games/tetris-clone/index.html" },
+  { title: "Emerald Par Nine", genre: "GOLF", entry: "games/emerald-par-nine/index.html" },
+  { title: "Fortune's Tide", genre: "PIRATE SLOT ARCADE", entry: "games/pirate-fortune/index.html",
+    model: "OpenAI: GPT-6.1 Terra",
+    prompt: "D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\nYes, your image is a lightning link slot game\nMake me a similar slot game.  Good graphics, sounds, player enters the amount of credits at the start and then uses those for play\n\n[attached image: a pirate-themed slot machine with five reels, jackpot displays, treasure, cannons, a pirate flag, and a tropical island background]" },
   { title: "Einstein Puzzle", genre: "LOGIC / DEDUCTION", entry: "games/einstein/index.html",
     model: "OpenAI GPT (Copilot SDK; exact model identifier not exposed)",
     prompt: "Add this to games following the rules D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\nThis is a bit more stringent than others \nThis is the einstein puzzle for linux I want an exact clone for web.  The original linux package is here [https://packages.qa.debian.org/einstein](https://packages.qa.debian.org/einstein)\n\n[attached image: Einstein Puzzle Linux screenshot, 800x600, with blue rain-textured background, a six-by-six candidate-card grid, red and blue graphical clues, timer, and Pause / Switch / Exit / Save / Options / Help buttons]" },
+  { title: "First Hunting Mission", genre: "STEALTH POUNCE", entry: "games/first-hunting-mission/index.html",
+    model: "Claude (via Cline, VS Code)",
+    prompt: "This is your image:\n\nThis is your task: D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\nI want you to make this one really shine, I want a class act of a game out of this that will exceed my expectations of you\n\n[attached image: a very small tabby kitten crouched flat on a blue duvet, enormous black eyes, ears forward and tail straight up, captioned \"This is her first hunting mission. Pretend you're scared\"]" },
+  { title: "Ink & Edge", genre: "SKETCHBOOK BLADE DUEL", entry: "games/ink-and-edge/index.html",
+    model: "GitHub Copilot (model identifier not exposed)",
+    prompt: "Hello Gemini, I want a fighting game using characters that look like the above. Also make a background that is sketchbook-style\n\nFollow these instructions\nD:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\n[attached images: a blue-and-red gesture-drawing sheet of anime-style dual-blade fighters with construction figures, and a graphite sketchbook page of martial-arts poses and a portrait]" },
+  { title: "I Can't Prove It", genre: "PUMPKIN STAND HEIST / STEALTH", entry: "games/cant-prove-it/index.html",
+    model: "Claude (via Cline, VS Code)",
+    prompt: "[no text ??? attached image only: meme captioned \"I can't prove it, but she may be shoplifting.\" showing a smiling woman in a gray top and light jeans holding one pumpkin in front of a tall tiered circular display stacked with pumpkins at an outdoor farm stand]" },
+  {
+    title: "Rift Runners",
+    genre: "XENO HOVERBIKE RACING",
+    entry: "games/rift-runners/index.html",
+    model: "Kimi (via Cline, VS Code)",
+    prompt: "D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\n[attached image: a third-person futuristic hoverbike race on an alien jungle track]"
+  }
 ];
+
+

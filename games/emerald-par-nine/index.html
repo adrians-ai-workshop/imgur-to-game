@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Emerald Par Nine — 3D Golf</title>
+<link rel="stylesheet" href="style.css"/>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<a id="exitBtn" href="../../index.html">ARCADE</a>
+<div class="hud">
+  <div class="hud-top">
+    <div class="hud-panel hud-left">
+      <div><span class="metric"><span class="lbl">HOLE</span><span id="hud-hole">1 / 9</span></span></div>
+      <div><span class="metric"><span class="lbl">PAR</span><span id="hud-par">4</span></span> <span class="metric"><span class="lbl">STROKES</span><span id="hud-strokes">0</span></span></div>
+      <div><span class="metric"><span class="lbl">DIST TO PIN</span><span id="hud-dist">—</span></span></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-panel">Camera <button id="camBtn" style="margin-left:8px;pointer-events:auto;background:transparent;border:1px solid rgba(125,227,255,.4);color:#cfe9ff;padding:2px 8px;border-radius:6px;cursor:pointer">C</button></div>
+    </div>
+  </div>
+  <div class="hud-bottom">
+    <div class="scorecard panel">
+      <h3>Scorecard</h3>
+      <div class="score-grid" id="scoreGrid"></div>
+    </div>
+    <div class="info panel">
+      <div><b>Drag</b> to aim & power. <b>Release</b> to hit. <b>R</b> reset ball. <b>N</b> next hole.</div>
+    </div>
+  </div>
+</div>
+<div id="attract">
+  <div class="attract-card">
+    <div class="title">EMERALD PAR NINE</div>
+    <div class="subtitle">A 3D golf experience. Nine handcrafted holes. Standard rules. Full-screen immersion.</div>
+    <button class="btn" id="startBtn">ENTER THE COURSE</button>
+    <div class="hint">Mouse drag to aim • Release to strike • R reset • N next hole</div>
+  </div>
+</div>
+<div class="crosshair" id="crosshair"></div>
+<div class="power-ring" id="powerRing"></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

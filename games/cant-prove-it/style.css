@@ -1,0 +1,17 @@
+/* I Can't Prove It — full-viewport canvas game */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #171009;
+}
+
+#game {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+  cursor: crosshair;
+}

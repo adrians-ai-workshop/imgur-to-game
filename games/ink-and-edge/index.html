@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f2eddf">
+    <title>Ink & Edge: A Sketchbook Duel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game.js" defer></script>
+  </head>
+  <body>
+    <canvas id="arena" aria-label="A hand-drawn sword-fighting arena"></canvas>
+    <div class="paper-edge" aria-hidden="true"></div>
+    <a class="arcade-link" href="../../index.html" aria-label="Return to arcade">← ARCADE</a>
+    <button class="sound-toggle" id="sound-toggle" type="button" aria-label="Mute sound" aria-pressed="false">♪ SOUND ON</button>
+
+    <header class="match-hud" id="match-hud" hidden>
+      <div class="fighter-readout player-readout">
+        <div class="name-line"><span>01</span><strong>THE BLUE STUDY</strong></div>
+        <div class="health-track"><span id="player-health"></span></div>
+        <div class="score-line"><span id="player-score">0</span> WINS</div>
+      </div>
+      <div class="round-readout">
+        <span>ROUND <b id="round-number">01</b></span>
+        <strong id="round-clock">60</strong>
+        <span>FIRST TO TWO</span>
+      </div>
+      <div class="fighter-readout rival-readout">
+        <div class="name-line"><strong>THE RED STUDY</strong><span>02</span></div>
+        <div class="health-track"><span id="rival-health"></span></div>
+        <div class="score-line"><span id="rival-score">0</span> WINS</div>
+      </div>
+    </header>
+
+    <section class="attract-panel" id="attract-panel" aria-labelledby="game-title">
+      <p class="eyebrow">FIGURE STUDY NO. 08 <span>·</span> A DUEL IN MOTION</p>
+      <h1 id="game-title">INK <i>&</i><br>EDGE</h1>
+      <p class="subtitle">FIGHT WITH BLADES</p>
+      <button class="start-button" id="start-button" type="button">DRAW YOUR SWORD <span aria-hidden="true">↗</span></button>
+      <div class="attract-foot"><span>ONE PLAYER / ONE RIVAL</span><span>BEST OF THREE</span></div>
+    </section>
+
+    <section class="message-panel" id="message-panel" hidden aria-live="polite">
+      <p class="eyebrow" id="message-kicker">ROUND COMPLETE</p>
+      <h2 id="message-title">A clean study.</h2>
+      <p id="message-copy">The next exchange begins shortly.</p>
+      <button class="start-button" id="message-button" type="button" hidden>FIGHT AGAIN <span aria-hidden="true">↗</span></button>
+    </section>
+
+    <div class="control-note" id="control-note" hidden>
+      <span><b>A / D</b> MOVE</span><span><b>W</b> JUMP</span><span><b>J</b> SLASH</span><span><b>K</b> GUARD</span><span><b>ESC</b> PAUSE</span>
+    </div>
+
+    <footer class="page-caption" aria-hidden="true"><span>POSE / COUNTERPOSE</span><span>GRAPHITE, INK & A LITTLE COURAGE</span></footer>
+  </body>
+</html>
