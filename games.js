@@ -58,6 +58,20 @@ window.ARCADE_GAMES = [
     entry: "games/rift-runners/index.html",
     model: "Kimi (via Cline, VS Code)",
     prompt: "D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\n[attached image: a third-person futuristic hoverbike race on an alien jungle track]"
+  },
+  {
+    title: "Blackfriars Reach",
+    genre: "3D ARCHITECTURAL WALKTHROUGH",
+    entry: "games/blackfriars-3d/index.html",
+    model: "Gemini 4 Argon",
+    prompt: "special request.  Create a 3-d model I can walk through of the blackfriars area of london\nremember the instructions: D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\n\nFollow-up: I have to use up my credits.\n\nPolish this...I mean make it really good.  As close to being there as possible D:\\vs-projects\\imgur-to-game-2\\games\\blackfriars-3d I vacationed at blackfriars and we stayed at the premier in, went to tesco and sainsbery, and a little restaurant in the alley behind the legendary pub.  I want to relive that.  Work very hard.  I want a think of beauty"
+  },
+  {
+    title: "Get In Loser, We're Going Hexing",
+    genre: "PIXEL-ART NIGHT DRIVE HEX-'EM-UP",
+    entry: "games/get-in-loser/index.html",
+    model: "Claude Fable 5.1 (GitHub Copilot)",
+    prompt: "D:\\vs-projects\\imgur-to-game-2\\.github\\copilot-instructions.md\nI expect something absolutely awesome.  But I'm tired of svg, do pixelart\n\n[attached image: ink-and-wash cartoon captioned \"GET IN LOSER WE'RE GOING HEXING\" of three witches in pointed hats riding in a black convertible with a COVEN license plate and spiral hubcaps: a redhead in the back, a blonde driver in cat-eye sunglasses, and a curly brunette passenger, signed ALEF]"
   }
 ];
 

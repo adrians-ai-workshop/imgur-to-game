@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Blackfriars Reach — 3D London Architectural Walkthrough</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="gl-canvas"></canvas>
+
+  <!-- ATTRACT / TITLE OVERLAY -->
+  <div id="attract-overlay" class="overlay visible">
+    <div class="attract-top-bar">
+      <div class="coin-tag">ARCHITECTURAL TOUR EDITION // 51°30'42"N 0°06'16"W</div>
+      <div class="credit-tag">RIVER THAMES SECTOR • EC4V / SE1</div>
+    </div>
+
+    <div class="attract-center">
+      <div class="crest-badge">CITY OF LONDON &amp; SOUTHWARK • VACATION EDITION</div>
+      <h1 class="game-title">BLACKFRIARS<span>REACH</span></h1>
+      <p class="game-subtitle">RELIVE BLACKFRIARS: PREMIER INN, NEW BRIDGE ST, THE BLACK FRIAR &amp; THE SECRET ALLEY BISTRO</p>
+
+      <div class="attract-features">
+        <div class="feat-pill vacation-pill">★ Premier Inn (Dorset Rise)</div>
+        <div class="feat-pill vacation-pill">★ Tesco Express &amp; Sainsbury's Local</div>
+        <div class="feat-pill vacation-pill">★ The Black Friar &amp; Alley Bistro</div>
+        <div class="feat-pill">1869 Bridge, Tube &amp; Solar Rail</div>
+      </div>
+
+      <button id="start-btn" class="start-prompt" type="button">
+        <span class="blink-dot"></span>
+        PRESS ENTER OR CLICK TO RELIVE YOUR BLACKFRIARS TRIP
+      </button>
+
+      <div class="controls-preview">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / <kbd>ARROWS</kbd> Walk Indoors &amp; Streets</span>
+        <span><kbd>MOUSE</kbd> Look</span>
+        <span><kbd>SHIFT</kbd> Brisk Stride</span>
+        <span><kbd>E</kbd> Relive Memory / Plaque</span>
+        <span><kbd>1</kbd>–<kbd>=</kbd> Fast Travel</span>
+        <span><kbd>T</kbd> Time</span>
+        <span><kbd>R</kbd> London Drizzle</span>
+        <span><kbd>P</kbd> Postcard View</span>
+        <span><kbd>F</kbd> Drone Fly</span>
+      </div>
+    </div>
+
+    <div class="attract-bottom-ticker">
+      <div class="ticker-label">LIVE VACATION &amp; HERITAGE CAMERA</div>
+      <div id="attract-poi-name" class="ticker-poi">Premier Inn London Blackfriars (1–2 Dorset Rise, EC4Y)</div>
+      <div id="attract-poi-desc" class="ticker-desc">Your Blackfriars home base just off New Bridge Street — step inside the lobby, Thyme breakfast room, and Room 312, then stroll to Tesco, Sainsbury's, The Black Friar pub, and the candlelit alley restaurant behind it.</div>
+    </div>
+  </div>
+
+  <!-- POSTCARD PHOTO MODE OVERLAY -->
+  <div id="postcard-overlay" class="overlay">
+    <div class="postcard-border">
+      <div class="postcard-top-stamp">
+        <div class="stamp-crest">ROYAL MAIL • EC4V</div>
+        <div class="stamp-title">FIRST CLASS</div>
+      </div>
+      <div class="postcard-caption-bar">
+        <div class="postcard-greeting">Greetings from Blackfriars, London</div>
+        <div id="postcard-location" class="postcard-sub">BLACKFRIARS LANE &amp; THE BLACK FRIAR PUB</div>
+      </div>
+      <div class="postcard-hint">Press <kbd>P</kbd> or <kbd>ESC</kbd> to return to HUD • Press <kbd>T</kbd> for Lighting • <kbd>R</kbd> for Drizzle</div>
+    </div>
+  </div>
+
+  <!-- IN-GAME HUD OVERLAY -->
+  <div id="hud-overlay" class="overlay">
+    <!-- Top Left: Location & Compass -->
+    <div class="hud-top-left">
+      <div class="hud-brand">
+        <span class="brand-dot"></span>
+        <span id="hud-zone-name">PREMIER INN — DORSET RISE EC4Y</span>
+      </div>
+      <div class="hud-coords" id="hud-coords">51.5115° N, 0.1044° W • ELEV +6.0m • HEADING 90° E</div>
+      <div class="hud-coords" id="hud-osm-info" style="color:#f6c96f;margin-top:3px;">ST: Dorset Rise EC4Y • Premier Inn London Blackfriars</div>
+      <div class="compass-strip">
+        <div id="compass-tape" class="compass-tape"></div>
+        <div class="compass-needle">▼</div>
+      </div>
+    </div>
+
+    <!-- Top Right: Vacation Memories, Plaques, Lighting, Weather, Postcard & Audio -->
+    <div class="hud-top-right">
+      <div class="stat-box vacation-stat">
+        <div class="stat-label">VACATION TRAIL</div>
+        <div class="stat-val" id="vacation-counter">0 / 5 ★</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">ALL MEMORIES</div>
+        <div class="stat-val" id="plaque-counter">0 / 12</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">LIGHTING</div>
+        <button id="time-btn" class="hud-chip-btn" type="button" title="Cycle Time of Day (Key: T)">GOLDEN DUSK</button>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">WEATHER</div>
+        <button id="rain-btn" class="hud-chip-btn" type="button" title="Toggle Cozy London Drizzle (Key: R)">CLEAR SKY</button>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">CAMERA</div>
+        <button id="postcard-btn" class="hud-chip-btn" type="button" title="Toggle Souvenir Postcard View (Key: P)">POSTCARD</button>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">LOCOMOTION</div>
+        <button id="mode-btn" class="hud-chip-btn" type="button" title="Toggle Walk / Drone Fly (Key: F)">PEDESTRIAN</button>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">AUDIO</div>
+        <button id="mute-btn" class="hud-chip-btn" type="button" title="Toggle Thames Soundscape (Key: M)">SOUND ON</button>
+      </div>
+      <a href="../../index.html" class="hud-chip-btn exit-link" title="Return to Master Game List">ARCADE MENU</a>
+    </div>
+
+    <!-- Center Reticle & Contextual Interaction Prompt -->
+    <div id="reticle" class="reticle"></div>
+    <div id="interact-prompt" class="interact-prompt hidden">
+      <span class="key-badge">E</span>
+      <span id="interact-text">Relive Vacation Memory</span>
+    </div>
+
+    <!-- Historical / Vacation Memory Modal Card -->
+    <div id="plaque-card" class="plaque-card hidden">
+      <div class="plaque-header">
+        <span id="plaque-crest" class="plaque-crest">VACATION MEMORY &amp; HERITAGE PLAQUE</span>
+        <button id="close-plaque-btn" class="plaque-close" type="button">✕</button>
+      </div>
+      <h2 id="plaque-title">Landmark Name</h2>
+      <div id="plaque-year" class="plaque-meta">Year &amp; Location</div>
+      <p id="plaque-body">Detailed architectural and personal vacation notes.</p>
+      <div class="plaque-footer">Press <kbd>E</kbd> or <kbd>ESC</kbd> to close</div>
+    </div>
+
+    <!-- Bottom Left: Interactive Radar Minimap -->
+    <div class="hud-bottom-left">
+      <div class="minimap-wrap">
+        <canvas id="minimap-canvas" width="188" height="188"></canvas>
+        <div class="minimap-caption">BLACKFRIARS &amp; VACATION RADAR (N ▲)</div>
+      </div>
+    </div>
+
+    <!-- Bottom Center: Landmark & Vacation Teleport Bar -->
+    <div class="hud-bottom-center">
+      <div class="teleport-label">★ VACATION TRAIL (KEYS 1–5) &amp; BLACKFRIARS LANDMARKS (KEYS 6–=)</div>
+      <div id="teleport-bar" class="teleport-bar"></div>
+    </div>
+
+    <!-- Bottom Right: Controls Help -->
+    <div class="hud-bottom-right">
+      <div class="help-line"><kbd>WASD</kbd> Walk Inside Buildings • <kbd>SHIFT</kbd> Run</div>
+      <div class="help-line"><kbd>CLICK</kbd> Look • <kbd>E</kbd> Memory • <kbd>P</kbd> Postcard</div>
+      <div class="help-line"><kbd>T</kbd> Time • <kbd>R</kbd> Drizzle • <kbd>F</kbd> Fly • <kbd>H</kbd> Title</div>
+    </div>
+  </div>
+
+  <script src="../collective-breach/three.min.js"></script>
+  <script src="osm-data.js"></script>
+  <script src="audio.js"></script>
+  <script src="world.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
